@@ -1,5 +1,8 @@
 # Phase 1: High-Performance IPC & Hardware Isolation (Days 1-2)
 
+**The Validation Task**:
+> To validate Phase 1, the developer must engineer a containerized client-server topology. Container A will run a Python process that generates randomized 1080p RGB image matrices. Container B will host a Python gRPC server. Both containers must be orchestrated via Docker Compose, sharing a mounted volume to facilitate a Unix Domain Socket connection. Container A must stream the raw binary image data to Container B over the UDS gRPC channel at a sustained rate of thirty requests per second. Container B must receive the payload, reconstruct the NumPy array, and print the tensor shape and execution latency. This project proves mastery of hardware isolation, binary contracts, and optimized IPC.
+
 This schedule simulates a **systems engineering stress test**. You are building a zero-network, hardware-accelerated Inter-Process Communication (IPC) pipeline.
 **Goal**: Prove absolute mastery over Docker volume mounting, binary serialization contracts, and asynchronous Python streaming.
 
