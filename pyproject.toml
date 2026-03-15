@@ -5,6 +5,7 @@ description = "This project is a containerized client-server architecture that s
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "colorlog>=6.10.1",
     "pydantic-settings>=2.13.1",
 ]
 
