@@ -13,3 +13,16 @@ dev = [
     "mypy>=1.19.1",
     "ruff>=0.15.6",
 ]
+
+[tool.ruff.lint]
+# Add the rule prefixes you want Ruff to enforce
+select = [
+    "E",   # Standard errors
+    "F",   # Standard flakes
+    "I",   # isort (automatically sorts your imports)
+    "UP",  # pyupgrade (forces modern Python syntax)
+    "NPY", # THE NUMPY RULES
+]
+
+# Tell Ruff not to complain if you leave some code un-autofixed
+ignore = []
