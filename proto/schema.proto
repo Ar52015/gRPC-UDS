@@ -2,18 +2,31 @@ syntax="proto3";
 
 package framestream;
 
+// Represents a single 1080p RGB frame sent by the client.
 message StreamFramesRequest {
+
+    // Raw RGB pixel data serialized as bytes (H x W x C).
     bytes frame_data = 1;
+    // Frame height in pixels.
     uint32 height = 2;
+    // Frame width in pixels.
     uint32 width = 3;
+    // Number of color channels (e.g. 3 for RGB).
     uint32 channels = 4;
+    // Monotonically increasing sequence ID for drop detection.
     uint64 frame_number = 5;
+    // Wall-clock time via time.time(), valid across containers sharing host clock.
     double timestamp = 6;
 }
 
+// Server response summarizing the completed stream.
 message StreamFramesResponse {
+
+    // Total number of frames the server received.
     uint64 frames_received = 1;
+    // Number of frames dropped, detected via frame_number gaps.
     uint64 frames_dropped = 2;
+    // Average per-frame latency in milliseconds.
     double avg_latency_ms = 3;
 }
 
