@@ -18,7 +18,7 @@ dev = [
 ]
 
 [tool.ruff.lint]
-# Add the rule prefixes you want Ruff to enforce
+# Add the rule prefixes want Ruff to enforce
 select = [
     "E",   # Standard errors
     "F",   # Standard flakes
@@ -26,6 +26,7 @@ select = [
     "UP",  # pyupgrade (forces modern Python syntax)
     "NPY", # THE NUMPY RULES
 ]
-
-# Tell Ruff not to complain if you leave some code un-autofixed
 ignore = []
+
+[tool.mypy]
+strict = true
