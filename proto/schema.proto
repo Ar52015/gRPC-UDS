@@ -12,8 +12,9 @@ message StreamFramesRequest {
 }
 
 message StreamFramesResponse {
-    uint64 frame_received = 1;
-    double avg_latency_ms = 2;
+    uint64 frames_received = 1;
+    uint64 frames_dropped = 2;
+    double avg_latency_ms = 3;
 }
 
 // Stream Service handles client-side streaming of 1080p RGB frames
