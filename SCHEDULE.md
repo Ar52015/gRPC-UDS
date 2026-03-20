@@ -40,7 +40,7 @@ This schedule simulates a **systems engineering stress test**. You are building 
     2. Set up repeatable proto compilation and integrate generated files into the project cleanly.
 
 - **Tasks**:
-    - [ ] Write `schema.proto` defining a client-side streaming RPC service:
+    - [x] Write `schema.proto` defining a client-side streaming RPC service:
         - `FrameRequest` message: `bytes frame_data`, `uint32 width`, `uint32 height`, `uint32 channels`, `uint64 frame_number`, `double timestamp`
         - `StreamSummary` response: `uint64 frames_received`, `double avg_latency_ms`
         - `rpc StreamFrames(stream FrameRequest) returns (StreamSummary)`
