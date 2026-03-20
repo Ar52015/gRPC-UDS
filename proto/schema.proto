@@ -17,6 +17,7 @@ message StreamFramesRequest {
     uint64 frame_number = 5;
     // Wall-clock time via time.time(), valid across containers sharing host clock.
     double timestamp = 6;
+
 }
 
 // Server response summarizing the completed stream.
@@ -28,6 +29,7 @@ message StreamFramesResponse {
     uint64 frames_dropped = 2;
     // Average per-frame latency in milliseconds.
     double avg_latency_ms = 3;
+
 }
 
 // Stream Service handles client-side streaming of 1080p RGB frames
