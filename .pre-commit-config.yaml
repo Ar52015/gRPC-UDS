@@ -13,6 +13,11 @@ repos:
       - id: hadolint-docker
         name: Lint Dockerfiles
 
+  - repo: https://github.com/bufbuild/buf
+    rev: v1.66.1
+    hooks:
+      - id: buf-lint
+
   - repo: local
     hooks:
       - id: ruff-check
