@@ -1,0 +1,25 @@
+syntax="proto3";
+
+package framestream;
+
+message StreamFramesRequest {
+    bytes frame_data = 1;
+    uint32 height = 2;
+    uint32 width = 3;
+    uint32 channels = 4;
+    uint64 frame_number = 5;
+    double timestamp = 6;
+}
+
+message StreamFramesResponse {
+    uint64 frame_received = 1;
+    double avg_latency_ms = 2;
+}
+
+// Stream Service handles client-side streaming of 1080p RGB frames
+// over Unix Domain Sockets for low-latency image transfer
+service StreamService {
+
+    // Accepts a stream of frames and returns an aggregate summary
+    rpc StreamFrames(stream StreamFramesRequest) returns (StreamFramesResponse);
+}
