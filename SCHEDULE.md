@@ -13,21 +13,21 @@ This schedule simulates a **systems engineering stress test**. You are building 
 **Load**: Level 2
 
 - **Tasks**:
-    - [ ] Install and configure `uv` as the project package manager.
-    - [ ] Initialize `uv` project with Python 3.14 (`uv init`, `pyproject.toml`, `.python-version`, `uv.lock`).
-    - [ ] Configure pre-commit hooks (`.pre-commit-config.yaml`):
+    - [x] Install and configure `uv` as the project package manager.
+    - [x] Initialize `uv` project with Python 3.14 (`uv init`, `pyproject.toml`, `.python-version`, `uv.lock`).
+    - [x] Configure pre-commit hooks (`.pre-commit-config.yaml`):
         - `trailing-whitespace`, `end-of-file-fixer`, `check-yaml`, `check-toml`
         - `hadolint-docker` for Dockerfile linting
         - Local hooks: `ruff check --fix`, `ruff format`, `mypy .` (all via `uv run`)
-    - [ ] Configure ruff rules: `E`, `F`, `I` (isort), `UP` (pyupgrade), `NPY` (NumPy).
-    - [ ] Configure strict mypy type checking (`[tool.mypy]` in `pyproject.toml` with `strict = true`).
-    - [ ] Build `config.py` — Pydantic `BaseSettings` loading `LOG_LEVEL` from `.env`.
-    - [ ] Build `app/utils/logger.py` — color-coded logger factory using `colorlog`:
+    - [x] Configure ruff rules: `E`, `F`, `I` (isort), `UP` (pyupgrade), `NPY` (NumPy).
+    - [x] Configure strict mypy type checking (`[tool.mypy]` in `pyproject.toml` with `strict = true`).
+    - [x] Build `config.py` — Pydantic `BaseSettings` loading `LOG_LEVEL` from `.env`.
+    - [x] Build `app/utils/logger.py` — color-coded logger factory using `colorlog`:
         - DEBUG (blue), INFO (green), WARNING (yellow), ERROR (red), CRITICAL (bold_red)
         - Format: `%(asctime)s [%(levelname)s] %(name)s:%(lineno)d - %(message)s`
-    - [ ] Add `__init__.py` files to `app/` and `app/utils/` so modules are importable from any working directory (required for Docker).
-    - [ ] Resolve `.env` tracking — either remove `.env` from `.gitignore` (safe for this project) or stop tracking it with `git rm --cached .env`.
-    - [ ] Install core dependencies: `grpcio`, `grpcio-tools`, `pydantic-settings`, `colorlog`.
+    - [x] Add `__init__.py` files to `app/` and `app/utils/` so modules are importable from any working directory (required for Docker).
+    - [x] Resolve `.env` tracking — either remove `.env` from `.gitignore` (safe for this project) or stop tracking it with `git rm --cached .env`.
+    - [x] Install core dependencies: `grpcio`, `grpcio-tools`, `pydantic-settings`, `colorlog`.
 
 ---
 
