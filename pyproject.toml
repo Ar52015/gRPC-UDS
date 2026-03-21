@@ -27,6 +27,12 @@ select = [
     "NPY", # THE NUMPY RULES
 ]
 ignore = []
+exclude = [
+    "generated/"
+]
 
 [tool.mypy]
 strict = true
+exclude = [
+    "^generated/"
+]
