@@ -20,5 +20,4 @@ uv run python -m grpc_tools.protoc \
     proto/*.proto
 
 # Verify the generated scripts
-uv run python -c "from generated import schema_pb2"
-uv run python -c "from generated import schema_pb2_grpc"
+uv run python -c "from generated import schema_pb2, schema_pb2_grpc"
