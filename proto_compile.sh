@@ -6,19 +6,19 @@
 # o - to supply pipefail
 set -euo pipefail
 
-# generate folders if they don't already exist
+# generate folder if they don't already exist
 mkdir -p ./generated
-mkdir -p ./generated/classes
-mkdir -p ./generated/stubs
 
-# add __init__.py files to generated folder
+# add __init__.py file to generated folder
 touch ./generated/__init__.py
-touch ./generated/classes/__init__.py
-touch ./generated/stubs/__init__.py
 
 # generate the classes and stubs using the schema
 uv run python -m grpc_tools.protoc \
     --proto_path=proto \
-    --python_out=./generated/classes \
-    --grpc_python_out=./generated/stubs \
+    --python_out=./generated/ \
+    --grpc_python_out=./generated/ \
     proto/*.proto
+
+# Verify the generated scripts
+uv run python -c "from generated import schema_pb2"
+uv run python -c "from generated import schema_pb2_grpc"
