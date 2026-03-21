@@ -46,13 +46,13 @@ This schedule simulates a **systems engineering stress test**. You are building 
         - `rpc StreamFrames(stream FrameRequest) returns (StreamSummary)`
         - Note: `frame_number` is a monotonically increasing sequence ID used for drop detection.
         - Note: `timestamp` uses `time.time()` (wall clock), not `perf_counter()`, since sender and receiver are separate processes in separate containers. Docker containers share the host clock so wall-clock deltas are valid.
-    - [ ] Write a `proto_compile.sh` script to invoke `uv run python -m grpc_tools.protoc` for repeatable codegen.
-    - [ ] Compile the `.proto` file into Python `_pb2.py` and `_pb2_grpc.py` stubs.
-    - [ ] Add generated `_pb2.py` / `_pb2_grpc.py` patterns to `.gitignore` (they are build artifacts, regenerated from the `.proto` source via `proto_compile.sh`).
-    - [ ] Exclude generated `_pb2.py` / `_pb2_grpc.py` files from ruff and mypy (update `pyproject.toml` excludes).
-    - [ ] Ensure `__init__.py` files exist in any package directories so generated stubs and app modules are importable.
-    - [ ] Verify the generated stubs import cleanly: `uv run python -c "import schema_pb2; import schema_pb2_grpc"`.
-    - [ ] Add `numpy` as a project dependency (`uv add numpy`) — needed for local testing in Day 3 before Docker is involved.
+    - [x] Write a `proto_compile.sh` script to invoke `uv run python -m grpc_tools.protoc` for repeatable codegen.
+    - [x] Compile the `.proto` file into Python `_pb2.py` and `_pb2_grpc.py` stubs.
+    - [x] Add generated `_pb2.py` / `_pb2_grpc.py` patterns to `.gitignore` (they are build artifacts, regenerated from the `.proto` source via `proto_compile.sh`).
+    - [x] Exclude generated `_pb2.py` / `_pb2_grpc.py` files from ruff and mypy (update `pyproject.toml` excludes).
+    - [x] Ensure `__init__.py` files exist in any package directories so generated stubs and app modules are importable.
+    - [x] Verify the generated stubs import cleanly: `uv run python -c "import schema_pb2; import schema_pb2_grpc"`.
+    - [x] Add `numpy` as a project dependency (`uv add numpy`) — needed for local testing in Day 3 before Docker is involved.
 
 - **Acceptance Criteria**:
     - The compiled protobuf files exist and can be imported without `ModuleNotFoundError`.
