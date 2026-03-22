@@ -39,13 +39,13 @@ source = { virtual = "." }
 dependencies = [
     { name = "colorlog" },
     { name = "grpcio" },
+    { name = "grpcio-tools" },
     { name = "numpy" },
     { name = "pydantic-settings" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "grpcio-tools" },
     { name = "mypy" },
     { name = "ruff" },
 ]
@@ -54,13 +54,13 @@ dev = [
 requires-dist = [
     { name = "colorlog", specifier = ">=6.10.1" },
     { name = "grpcio", specifier = ">=1.78.0" },
+    { name = "grpcio-tools", specifier = ">=1.78.0" },
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "grpcio-tools", specifier = ">=1.78.0" },
     { name = "mypy", specifier = ">=1.19.1" },
     { name = "ruff", specifier = ">=0.15.6" },
 ]
