@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-# Stage 0 -> Builder
-FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim as Builder
+# Stage 0 -> builder
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim as builder
 
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
@@ -12,7 +12,7 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     --mount=type=bind,source=uv.lock,target=uv.lock \
-    uv sync --locked --no-install-pyproject
+    uv sync --locked --no-install-project
 
 COPY . /app
 
@@ -27,7 +27,7 @@ FROM python:3.14-slim-trixie
 RUN groupadd --system --gid 999 nonroot \
     && useradd --system --gid 999 --uid 999 --create-home nonroot
 
-COPY --from=Builder --chown=nonroot:nonroot /app /app
+COPY --from=builder --chown=nonroot:nonroot /app /app
 
 ENV PATH="/app/.venv/bin:$PATH"
 
@@ -36,4 +36,4 @@ USER nonroot
 WORKDIR /app
 
 # TO BE OVERRIDEN BY DOCKER COMPOSE
-CMD ["/app/.venv/bin/python3", "main.py"]
+CMD ["python", "main.py"]
