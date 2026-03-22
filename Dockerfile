@@ -35,4 +35,5 @@ USER nonroot
 
 WORKDIR /app
 
+# TO BE OVERRIDEN BY DOCKER COMPOSE
 CMD ["/app/.venv/bin/python3", "main.py"]
