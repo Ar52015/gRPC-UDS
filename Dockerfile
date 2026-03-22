@@ -19,7 +19,7 @@ COPY . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
-RUN /app/proto_compile.sh
+RUN bash /app/proto_compile.sh
 
 # Stage 1 -> runner
 FROM python:3.14-slim-trixie
