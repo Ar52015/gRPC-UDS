@@ -12,3 +12,4 @@ buf.yaml
 __pycache__/
 **/*.pyc
 .git/
+.generated/
