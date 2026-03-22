@@ -75,15 +75,12 @@ This schedule simulates a **systems engineering stress test**. You are building 
     3. Verify the UDS volume mount works between containers.
 
 - **Tasks**:
-    - [ ] Write `.dockerignore` to exclude `.venv/`, `.git/`, `.mypy_cache/`, `.ruff_cache/`, `__pycache__/`, etc. from build context.
-    - [ ] Write `Dockerfile.sender` for the client container (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
-    - [ ] Write `Dockerfile.receiver` for the server container (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
-    - [ ] Write `docker-compose.yml` defining `sender` and `receiver` services:
+    - [x] Write `.dockerignore` to exclude `.venv/`, `.git/`, `.mypy_cache/`, `.ruff_cache/`, `__pycache__/`, etc. from build context.
+    - [x] Write `Dockerfile.sender` for the client container (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
+    - [x] Write `Dockerfile.receiver` for the server container (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
+    - [x] Write `docker-compose.yml` defining `sender` and `receiver` services:
         - No port mappings whatsoever — all IPC goes through the UDS.
         - Shared host volume: `./shared_socket:/ipc` mounted in both containers.
-    - [ ] The client's retry logic (Day 3) handles the startup race — no `depends_on` health check needed for the socket itself.
-    - [ ] Add config entries for gRPC settings: `GRPC_SOCKET_PATH`, `MAX_MESSAGE_SIZE`, `TARGET_FPS` to `config.py` / `.env`.
-    - [ ] **Blocker**: Do not map any standard TCP network ports (`50051`). No `network_mode: host`.
 
 - **Acceptance Criteria**:
     - Running `docker compose up -d` successfully spins up both containers.
@@ -108,6 +105,10 @@ This schedule simulates a **systems engineering stress test**. You are building 
     3. Handle the gRPC 4MB default message size limit (a single 1080p RGB frame is ~6MB).
 
 - **Tasks**:
+
+    **Config & Constraints**
+    - [ ] Add config entries for gRPC settings: `GRPC_SOCKET_PATH`, `MAX_MESSAGE_SIZE`, `TARGET_FPS` to `config.py` / `.env`.
+    - [ ] **Blocker**: Do not map any standard TCP network ports (`50051`). No `network_mode: host`.
 
     **Server (`receiver`)**
     - [ ] Check for and remove a stale socket file (`os.unlink()`) before binding — prevents `Address already in use` on restart after a crash.
