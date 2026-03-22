@@ -1,0 +1,17 @@
+services:
+  sender:
+    depends_on:
+      - receiver
+    image: grpc-uds:latest
+    command: ["python", "sender_main.py"]
+    volumes:
+      - ipc:/ipc
+  receiver:
+    build: .
+    image: grpc-uds:latest
+    command: ["python", "receiver_main.py"]
+    volumes:
+      - ipc:/ipc
+
+volumes:
+  ipc:
