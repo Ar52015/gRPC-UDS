@@ -65,37 +65,7 @@ This schedule simulates a **systems engineering stress test**. You are building 
 
 ---
 
-## Day 2: The Topology
-**Focus**: Dockerfiles, Docker Compose, Shared Volumes, UDS Plumbing
-**Load**: Level 4
-
-- **Objectives**:
-    1. Containerize both services with proper Dockerfiles.
-    2. Engineer the Docker Compose topology to completely isolate the network while sharing a physical file structure.
-    3. Verify the UDS volume mount works between containers.
-
-- **Tasks**:
-    - [x] Write `.dockerignore` to exclude `.venv/`, `.git/`, `.mypy_cache/`, `.ruff_cache/`, `__pycache__/`, etc. from build context.
-    - [x] Write `Dockerfile.sender` for the client container (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
-    - [x] Write `Dockerfile.receiver` for the server container (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
-    - [x] Write `docker-compose.yml` defining `sender` and `receiver` services:
-        - No port mappings whatsoever — all IPC goes through the UDS.
-        - Shared host volume: `./shared_socket:/ipc` mounted in both containers.
-
-- **Acceptance Criteria**:
-    - Running `docker compose up -d` successfully spins up both containers.
-    - Creating a dummy file in Container A's `/ipc` folder makes it instantly visible in Container B's `/ipc` folder.
-    - `docker compose down` cleanly tears down both containers.
-    - Hadolint pre-commit hook passes on both Dockerfiles.
-    - Docker build completes in reasonable time (`.dockerignore` excludes bloat).
-
-- **Resources**:
-    - [Docker Compose Volumes Documentation](https://docs.docker.com/compose/compose-file/05-services/#volumes)
-    - [Dockerfile Best Practices](https://docs.docker.com/build/building/best-practices/)
-
----
-
-## Day 3: The Server & The Client
+## Day 2: The Server & The Client
 **Focus**: gRPC AsyncIO, NumPy Serialization, Message Size Limits
 **Load**: Level 5
 
@@ -106,9 +76,8 @@ This schedule simulates a **systems engineering stress test**. You are building 
 
 - **Tasks**:
 
-    **Config & Constraints**
+    **Config**
     - [ ] Add config entries for gRPC settings: `GRPC_SOCKET_PATH`, `MAX_MESSAGE_SIZE`, `TARGET_FPS` to `config.py` / `.env`.
-    - [ ] **Blocker**: Do not map any standard TCP network ports (`50051`). No `network_mode: host`.
 
     **Server (`receiver`)**
     - [ ] Check for and remove a stale socket file (`os.unlink()`) before binding — prevents `Address already in use` on restart after a crash.
@@ -129,16 +98,47 @@ This schedule simulates a **systems engineering stress test**. You are building 
     - [ ] Add retry logic with exponential backoff for initial connection (server socket may not exist yet on startup).
 
 - **Acceptance Criteria**:
-    - Server starts, cleans up any stale socket, and binds to the UDS socket successfully.
+    - Server starts, cleans up any stale socket, and binds to a local UDS socket successfully.
     - Client connects, sends a single test frame, server receives and reconstructs it correctly.
     - No gRPC message size errors (the ~6MB frames go through cleanly).
     - Server logs: `Received Frame #1: (1080, 1920, 3) | Latency: Xms` using the `colorlog` logger.
     - Server detects and warns on frame number gaps.
+    - All tested locally without Docker — both processes run on the host via `uv run`.
 
 - **Resources**:
     - [gRPC AsyncIO Python API](https://grpc.github.io/grpc/python/grpc_asyncio.html)
     - [gRPC Message Size Configuration](https://grpc.io/docs/guides/message-size-limits/)
     - [NumPy `frombuffer` Documentation](https://numpy.org/doc/stable/reference/generated/numpy.frombuffer.html)
+
+---
+
+## Day 3: The Topology
+**Focus**: Dockerfiles, Docker Compose, Shared Volumes, UDS Plumbing
+**Load**: Level 4
+
+- **Objectives**:
+    1. Containerize both services with proper Dockerfiles.
+    2. Engineer the Docker Compose topology to completely isolate the network while sharing a physical file structure.
+    3. Verify the UDS volume mount works between containers.
+
+- **Tasks**:
+    - [x] Write `.dockerignore` to exclude `.venv/`, `.git/`, `.mypy_cache/`, `.ruff_cache/`, `__pycache__/`, etc. from build context.
+    - [x] Write a shared `Dockerfile` for both containers (Python 3.14, `uv sync`, copies app code, runs `proto_compile.sh` during build).
+    - [x] Write `compose.yaml` defining `sender` and `receiver` services with CMD overrides:
+        - No port mappings whatsoever — all IPC goes through the UDS.
+        - Shared volume mounted at `/ipc` in both containers.
+    - [x] **Constraint**: Do not map any standard TCP network ports (`50051`). No `network_mode: host`.
+
+- **Acceptance Criteria**:
+    - `docker compose build` succeeds — Hadolint pre-commit hook passes on the Dockerfile.
+    - `docker compose up -d` spins up both containers with frames streaming over UDS.
+    - Creating a file in Container A's `/ipc` folder makes it instantly visible in Container B's `/ipc` folder.
+    - `docker compose down` cleanly tears down both containers.
+    - No TCP connections are used (`ss -tlnp` inside containers shows nothing).
+
+- **Resources**:
+    - [Docker Compose Volumes Documentation](https://docs.docker.com/compose/compose-file/05-services/#volumes)
+    - [Dockerfile Best Practices](https://docs.docker.com/build/building/best-practices/)
 
 ---
 
