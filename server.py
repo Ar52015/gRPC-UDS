@@ -17,7 +17,12 @@ settings = Settings()
 
 
 class FrameServicer(schema_pb2_grpc.StreamServiceServicer):
-    """ """
+    """gRPC servicer that receives streamed 1080p RGB frames over UDS.
+
+    Implements the StreamService defined in schema.proto. Consumes
+    a client-side stream of raw frame bytes, reconstructs NumPy arrays,
+    and returns an aggregate summary on stream completion.
+    """
 
     @override
     async def StreamFrames(
@@ -28,6 +33,18 @@ class FrameServicer(schema_pb2_grpc.StreamServiceServicer):
             schema_pb2.StreamFramesResponse,
         ],
     ) -> schema_pb2.StreamFramesResponse:
+        """Consume a client-side frame stream and return an aggregate summary.
+
+        Reconstructs each frame via np.frombuffer, computes per-frame
+        wall-clock latency, and detects dropped frames via sequence gaps.
+
+        Args:
+            request_iterator: Async stream of StreamFramesRequest messages.
+            context: gRPC servicer context for the active RPC.
+
+        Returns:
+            StreamFramesResponse with total frames, drops, and avg latency.
+        """
         frames_received: int = 0
         total_latency: float = 0.0
         last_frame_number: int = -1
@@ -77,6 +94,14 @@ class FrameServicer(schema_pb2_grpc.StreamServiceServicer):
 
 
 async def serve() -> None:
+    """Start the async gRPC server, bind to UDS, and block until shutdown.
+
+    Cleans up any stale socket file, binds to the configured UDS path,
+    and waits for SIGTERM/SIGINT before gracefully stopping.
+
+    Raises:
+        OSError: If the socket path is invalid or inaccessible.
+    """
     socket_path = settings.GRPC_SOCKET_PATH
 
     try:

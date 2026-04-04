@@ -16,7 +16,17 @@ settings = Settings()
 async def frame_generator(
     frame_count: int,
 ) -> AsyncIterator[schema_pb2.StreamFramesRequest]:
-    """ """
+    """Yield random 1080p RGB frames as StreamFramesRequest messages.
+
+    Generates uint8 arrays of shape (1080, 1920, 3), serializes them
+    to bytes, and wraps each in a StreamFramesRequest with metadata.
+
+    Args:
+        frame_count: Number of frames to generate.
+
+    Yields:
+        StreamFramesRequest containing raw frame bytes and metadata.
+    """
     rng = np.random.default_rng()
 
     for frame_number in range(frame_count):
@@ -34,7 +44,14 @@ async def frame_generator(
 
 
 async def send() -> None:
-    """ """
+    """Connect to the gRPC server over UDS and stream frames.
+
+    Opens an async gRPC channel with exponential backoff retry,
+    streams generated frames, and logs the server's summary response.
+
+    Raises:
+        RuntimeError: If all connection retries are exhausted.
+    """
     client = grpc.aio.insecure_channel(
         target=f"unix://{settings.GRPC_SOCKET_PATH}",
         options=[
