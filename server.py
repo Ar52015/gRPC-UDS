@@ -70,7 +70,7 @@ class FrameServicer(schema_pb2_grpc.StreamServiceServicer):
             last_frame_number = req.frame_number
 
             logger.info(
-                "Recieved Frame #%d: %s | Latency: %.2fms",
+                "Received Frame #%d: %s | Latency: %.2fms",
                 req.frame_number,
                 frame.shape,
                 latency_ms,
