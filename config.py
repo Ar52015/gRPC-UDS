@@ -17,4 +17,4 @@ class Settings(BaseSettings):
     GRPC_SOCKET_PATH: str = "/ipc/grpc.sock"
     MAX_MESSAGE_SIZE: int = 8388608
     TARGET_FPS: int = 30
-    MAX_CHANNEL_CONNECT_RETRIES = 5
+    MAX_CHANNEL_CONNECT_RETRIES: int = 5
