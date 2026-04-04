@@ -8,7 +8,7 @@ from config import Settings
 settings = Settings()
 
 
-def logger(name: str = "app") -> logging.Logger:
+def setup_logger(name: str = "app") -> logging.Logger:
     """
     Configure and setup a logger that handles console logging
 
