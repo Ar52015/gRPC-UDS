@@ -53,6 +53,8 @@ This schedule simulates a **systems engineering stress test**. You are building 
     - [x] Ensure `__init__.py` files exist in any package directories so generated stubs and app modules are importable.
     - [x] Verify the generated stubs import cleanly: `uv run python -c "import schema_pb2; import schema_pb2_grpc"`.
     - [x] Add `numpy` as a project dependency (`uv add numpy`) — needed for local testing in Day 3 before Docker is involved.
+    - [x] Add `mypy-protobuf` as a dev dependency and integrate `--mypy_out` / `--mypy_grpc_out` into `proto_compile.sh` for generated `.pyi` type stubs.
+    - [x] Add `types-protobuf` and `types-grpcio` as dev dependencies for mypy type checking.
 
 - **Acceptance Criteria**:
     - The compiled protobuf files exist and can be imported without `ModuleNotFoundError`.
