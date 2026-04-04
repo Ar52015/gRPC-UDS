@@ -15,7 +15,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "mypy>=1.19.1",
+    "mypy-protobuf>=5.0.0",
     "ruff>=0.15.6",
+    "types-grpcio>=1.0.0.20251009",
+    "types-protobuf>=7.34.1.20260403",
 ]
 
 [tool.ruff.lint]
