@@ -209,6 +209,9 @@ __marimo__/
 # Generated .claude files
 .claude/healthchecks
 
+# Pyright config (local editor setting)
+pyrightconfig.json
+
 # Adding build artifacts in the generated folder
 generated/*
 !generated/__init__.py
