@@ -11,3 +11,9 @@ class Settings(BaseSettings):
     # Logging
 
     LOG_LEVEL: str = "INFO"
+
+    # gRPC Settings
+
+    GRPC_SOCKET_PATH: str = "/ipc/grpc.sock"
+    MAX_MESSAGE_SIZE: int = 8388608
+    TARGET_FPS: int = 30
