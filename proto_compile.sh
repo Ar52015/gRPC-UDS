@@ -13,6 +13,7 @@ mkdir -p ./generated
 touch ./generated/__init__.py
 
 # generate the classes and stubs using the schema
+# Include mypy stubs if protoc-gen-mypy is available
 MYPY_FLAGS=()
 if command -v protoc-gen-mypy &>/dev/null; then
     MYPY_FLAGS=(--mypy_out=./generated/ --mypy_grpc_out=./generated/)

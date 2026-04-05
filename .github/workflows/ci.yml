@@ -24,7 +24,7 @@ jobs:
       - name: Format
         run: uv run ruff format --check .
       - name: Generate protobuf stubs
-        run: bash proto_compile.sh
+        run: uv run bash proto_compile.sh
       - name: Type Check
         run: uv run mypy .
   build-images:
