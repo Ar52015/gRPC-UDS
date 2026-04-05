@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  lint-and-test:
+    name: Lint, Type Check, and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --all-groups
+      - name: Lint
+        run: uv run ruff check .
+      - name: Lint Dockerfile
+        run: docker run --rm -i hadolint/hadolint:v2.12.0 hadolint --ignore DL3008 - < Dockerfile
+      - name: Format
+        run: uv run ruff format --check .
+      - name: Type Check
+        run: uv run mypy .
+  build-images:
+    name: Build Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compose
+        run: docker compose build
+  smoke-test:
+    name: Integration smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compose
+        run: docker compose up --build -d
+      - name: Wait
+        run: sleep 20
+      - name: Check logs
+        run: docker compose logs receiver | grep "Received Frame"
+      - name: Cleanup
+        run: docker compose down
