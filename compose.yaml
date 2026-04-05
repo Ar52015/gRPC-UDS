@@ -3,13 +3,13 @@ services:
     depends_on:
       - receiver
     image: grpc-uds:latest
-    command: ["python", "sender_main.py"]
+    command: ["python", "client.py"]
     volumes:
       - ipc:/ipc
   receiver:
     build: .
     image: grpc-uds:latest
-    command: ["python", "receiver_main.py"]
+    command: ["python", "server.py"]
     volumes:
       - ipc:/ipc
 
