@@ -29,6 +29,8 @@ RUN groupadd --system --gid 999 nonroot \
 
 COPY --from=builder --chown=nonroot:nonroot /app /app
 
+RUN mkdir -p /ipc && chown nonroot:nonroot /ipc
+
 ENV PATH="/app/.venv/bin:$PATH"
 
 USER nonroot
