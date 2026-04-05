@@ -155,14 +155,14 @@ This schedule simulates a **systems engineering stress test**. You are building 
 - **Tasks**:
 
     **Rate Control**
-    - [ ] Implement drift-corrected rate limiting in the client (not naive `sleep(1/30)` — account for frame generation and send time).
-    - [ ] Log actual FPS on the client side every N frames (e.g., rolling average over last 30 frames).
+    - [x] Implement drift-corrected rate limiting in the client (not naive `sleep(1/30)` — account for frame generation and send time).
+    - [x] Log actual FPS on the client side every N frames (e.g., rolling average over last 30 frames).
 
     **Integration**
-    - [ ] Run `docker compose up` — both containers running, frames streaming over UDS at 30 FPS.
-    - [ ] Confirm no TCP connections are used (`ss -tlnp` inside containers shows nothing).
-    - [ ] Verify graceful shutdown: `docker compose down` cleanly stops both containers and removes the socket file.
-    - [ ] Soak test: monitor for frame drops (via `frame_number` gaps), buffer overflows, or memory leaks over a sustained 60-second run.
+    - [x] Run `docker compose up` — both containers running, frames streaming over UDS at 30 FPS.
+    - [x] Confirm no TCP connections are used (`ss -tlnp` inside containers shows nothing).
+    - [x] Verify graceful shutdown: `docker compose down` cleanly stops both containers and removes the socket file.
+    - [x] Soak test: monitor for frame drops (via `frame_number` gaps), buffer overflows, or memory leaks over a sustained 60-second run.
 
 - **Acceptance Criteria**:
     - The gRPC channel connects over the UDS file without using localhost or TCP.
