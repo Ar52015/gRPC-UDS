@@ -79,25 +79,25 @@ This schedule simulates a **systems engineering stress test**. You are building 
 - **Tasks**:
 
     **Config**
-    - [ ] Add config entries for gRPC settings: `GRPC_SOCKET_PATH`, `MAX_MESSAGE_SIZE`, `TARGET_FPS` to `config.py` / `.env`.
+    - [x] Add config entries for gRPC settings: `GRPC_SOCKET_PATH`, `MAX_MESSAGE_SIZE`, `TARGET_FPS` to `config.py` / `.env`.
 
     **Server (`receiver`)**
-    - [ ] Check for and remove a stale socket file (`os.unlink()`) before binding — prevents `Address already in use` on restart after a crash.
-    - [ ] Bind a `grpc.aio` server to `unix:///ipc/grpc.sock`.
-    - [ ] Increase `max_receive_message_length` to at least 8MB (default 4MB is too small for a ~6MB frame).
-    - [ ] Implement `StreamFrames` RPC handler: receive each `FrameRequest`, reconstruct the matrix via `np.frombuffer(frame_data, dtype=np.uint8).reshape((height, width, channels))`.
-    - [ ] Compute end-to-end latency: `time.time() - request.timestamp` (wall clock, shared host clock between containers).
-    - [ ] Track `frame_number` to detect dropped frames — log a warning if a gap is detected.
-    - [ ] Log each frame using the project logger: `Received Frame #42: (1080, 1920, 3) | Latency: 4.2ms`.
-    - [ ] On stream completion, return `StreamSummary` with total frames received and average latency.
-    - [ ] Handle `SIGTERM`/`SIGINT` for graceful shutdown (cleanup socket file on exit).
+    - [x] Check for and remove a stale socket file (`os.unlink()`) before binding — prevents `Address already in use` on restart after a crash.
+    - [x] Bind a `grpc.aio` server to `unix:///ipc/grpc.sock`.
+    - [x] Increase `max_receive_message_length` to at least 8MB (default 4MB is too small for a ~6MB frame).
+    - [x] Implement `StreamFrames` RPC handler: receive each `FrameRequest`, reconstruct the matrix via `np.frombuffer(frame_data, dtype=np.uint8).reshape((height, width, channels))`.
+    - [x] Compute end-to-end latency: `time.time() - request.timestamp` (wall clock, shared host clock between containers).
+    - [x] Track `frame_number` to detect dropped frames — log a warning if a gap is detected.
+    - [x] Log each frame using the project logger: `Received Frame #42: (1080, 1920, 3) | Latency: 4.2ms`.
+    - [x] On stream completion, return `StreamSummary` with total frames received and average latency.
+    - [x] Handle `SIGTERM`/`SIGINT` for graceful shutdown (cleanup socket file on exit).
 
     **Client (`sender`)**
-    - [ ] Connect a `grpc.aio` channel to `unix:///ipc/grpc.sock`.
-    - [ ] Increase `max_send_message_length` to at least 8MB.
-    - [ ] Implement a frame generator: produce `(1080, 1920, 3)` `np.uint8` random matrices.
-    - [ ] Embed `time.time()` timestamp and monotonically increasing `frame_number` in each `FrameRequest`.
-    - [ ] Add retry logic with exponential backoff for initial connection (server socket may not exist yet on startup).
+    - [x] Connect a `grpc.aio` channel to `unix:///ipc/grpc.sock`.
+    - [x] Increase `max_send_message_length` to at least 8MB.
+    - [x] Implement a frame generator: produce `(1080, 1920, 3)` `np.uint8` random matrices.
+    - [x] Embed `time.time()` timestamp and monotonically increasing `frame_number` in each `FrameRequest`.
+    - [x] Add retry logic with exponential backoff for initial connection (server socket may not exist yet on startup).
 
 - **Acceptance Criteria**:
     - Server starts, cleans up any stale socket, and binds to a local UDS socket successfully.
