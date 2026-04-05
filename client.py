@@ -1,5 +1,6 @@
 import asyncio
 import time
+from collections import deque
 from collections.abc import AsyncIterator
 
 import grpc.aio
@@ -16,10 +17,11 @@ settings = Settings()
 async def frame_generator(
     frame_count: int,
 ) -> AsyncIterator[schema_pb2.StreamFramesRequest]:
-    """Yield random 1080p RGB frames as StreamFramesRequest messages.
+    """Yield random 1080p RGB frames at a drift-corrected rate.
 
-    Generates uint8 arrays of shape (1080, 1920, 3), serializes them
-    to bytes, and wraps each in a StreamFramesRequest with metadata.
+    Uses an anchor-based timing loop to sustain TARGET_FPS. Sleeps
+    until the target send time before generating each frame. Logs
+    a rolling FPS average every TARGET_FPS frames.
 
     Args:
         frame_count: Number of frames to generate.
@@ -28,10 +30,23 @@ async def frame_generator(
         StreamFramesRequest containing raw frame bytes and metadata.
     """
     rng = np.random.default_rng()
+    interval = 1 / settings.TARGET_FPS
+    timestamps: deque[float] = deque(maxlen=settings.TARGET_FPS)
+    anchor = time.perf_counter()
 
     for frame_number in range(frame_count):
+        target = anchor + frame_number * interval
+        sleep_duration = target - time.perf_counter()
+        if sleep_duration > 0:
+            await asyncio.sleep(sleep_duration)
+
         frame = rng.integers(0, 256, size=(1080, 1920, 3), dtype=np.uint8)
         frame_bytes = frame.tobytes()
+
+        timestamps.append(time.perf_counter())
+        if len(timestamps) == settings.TARGET_FPS:
+            fps = (len(timestamps) - 1) / (timestamps[-1] - timestamps[0])
+            logger.info("Rolling FPS: %.1f", fps)
 
         yield schema_pb2.StreamFramesRequest(
             frame_data=frame_bytes,
