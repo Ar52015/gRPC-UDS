@@ -12,17 +12,23 @@ mkdir -p ./generated
 # add __init__.py file to generated folder
 touch ./generated/__init__.py
 
-# generate the classes, stubs, and mypy type stubs using the schema
+# generate the classes and stubs using the schema
+MYPY_FLAGS=()
+if command -v protoc-gen-mypy &>/dev/null; then
+    MYPY_FLAGS=(--mypy_out=./generated/ --mypy_grpc_out=./generated/)
+fi
+
 uv run python -m grpc_tools.protoc \
     --proto_path=proto \
     --python_out=./generated/ \
     --grpc_python_out=./generated/ \
-    --mypy_out=./generated/ \
-    --mypy_grpc_out=./generated/ \
+    "${MYPY_FLAGS[@]}" \
     proto/*.proto
 
 sed -i 's/^import schema_pb2/from . import schema_pb2/' ./generated/schema_pb2_grpc.py
-sed -i 's/^import schema_pb2/from . import schema_pb2/' ./generated/schema_pb2_grpc.pyi
+if [ -f ./generated/schema_pb2_grpc.pyi ]; then
+    sed -i 's/^import schema_pb2/from . import schema_pb2/' ./generated/schema_pb2_grpc.pyi
+fi
 
 # Verify the generated scripts
 uv run python -c "from generated import schema_pb2, schema_pb2_grpc"
