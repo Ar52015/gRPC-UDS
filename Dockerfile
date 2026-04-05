@@ -21,14 +21,17 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 RUN bash /app/proto_compile.sh
 
-# Stage 1 -> runner
+# Stage 1 -> runner (minimal image, no build tools)
 FROM python:3.14-slim-trixie
 
+# Create a non-root user for running the application
 RUN groupadd --system --gid 999 nonroot \
     && useradd --system --gid 999 --uid 999 --create-home nonroot
 
+# Copy built application from builder stage
 COPY --from=builder --chown=nonroot:nonroot /app /app
 
+# Create the UDS mount point writable by nonroot
 RUN mkdir -p /ipc && chown nonroot:nonroot /ipc
 
 ENV PATH="/app/.venv/bin:$PATH"
@@ -37,5 +40,5 @@ USER nonroot
 
 WORKDIR /app
 
-# TO BE OVERRIDEN BY DOCKER COMPOSE
+# Overridden by docker compose (server.py / client.py)
 CMD ["python", "main.py"]

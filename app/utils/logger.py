@@ -1,3 +1,5 @@
+"""Color-coded logger factory using colorlog."""
+
 import logging
 import sys
 
@@ -9,14 +11,13 @@ settings = Settings()
 
 
 def setup_logger(name: str = "app") -> logging.Logger:
-    """
-    Configure and setup a logger that handles console logging
+    """Configure and return a color-coded console logger.
 
     Args:
-        name(str): name of the logger
+        name: Name of the logger instance.
 
     Returns:
-        logging.Logger: custom defined logger object
+        Configured logger with color-coded output to stdout.
     """
     logger = logging.getLogger(name)
 

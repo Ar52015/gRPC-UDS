@@ -1,3 +1,5 @@
+"""Async gRPC client that streams 1080p RGB frames over UDS."""
+
 import asyncio
 import time
 from collections import deque

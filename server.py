@@ -1,3 +1,5 @@
+"""Async gRPC server that receives streamed 1080p RGB frames over UDS."""
+
 import asyncio
 import os
 import signal
