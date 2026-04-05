@@ -189,30 +189,26 @@ This schedule simulates a **systems engineering stress test**. You are building 
 - **Tasks**:
 
     **CI Pipeline (GitHub Actions)**
-    - [ ] Create `.github/workflows/ci.yml`:
+    - [x] Create `.github/workflows/ci.yml`:
         - Trigger on push and PR to `main`.
         - Job 1 — **Lint & Type Check**: `uv sync`, `ruff check`, `ruff format --check`, `mypy .`.
         - Job 2 — **Build Images**: `docker compose build` — this runs `proto_compile.sh` inside the Dockerfile, confirming both proto compilation and image build succeed.
         - Job 3 — **Integration Smoke Test**: `docker compose up -d`, wait for logs, verify server output contains `Received Frame`, `docker compose down`.
-    - [ ] Add CI status badge to `README.md`.
+    - [x] Add CI status badge to `README.md`.
 
-    **Container Registry**
-    - [ ] Create `.github/workflows/publish.yml`:
-        - Trigger on tags matching `v*` (e.g., `v0.1.0`).
-        - Build multi-platform images (`linux/amd64`, `linux/arm64`) using `docker buildx`.
-        - Push to GitHub Container Registry (`ghcr.io`).
-        - Tag images as `latest` + the git tag version.
+    **Container Registry (skipped)**
+    - ~~Create `.github/workflows/publish.yml`~~ — skipped; not needed for a learning project.
 
     **Deployment**
-    - [ ] Write a `Makefile` with common targets:
+    - [x] Write a `Makefile` with common targets:
         - `make proto` — regenerate protobuf stubs locally.
         - `make build` — build Docker images.
         - `make up` — start the stack (`docker compose up -d`).
         - `make down` — tear down the stack.
         - `make logs` — tail logs from both containers.
         - `make clean` — remove images, volumes, and the socket file.
-    - [ ] Add a `deploy.sh` script (or `make deploy`) that pulls published images from `ghcr.io` and runs the stack — no local build required.
-    - [ ] Document deployment steps in `README.md`: prerequisites, quick start, and configuration via `.env`.
+    - ~~Add a `deploy.sh` script~~ — skipped; not needed without a container registry.
+    - [x] Document deployment steps in `README.md`: prerequisites, quick start, and configuration via `.env`.
 
 - **Acceptance Criteria**:
     - Pushing to `main` triggers CI; all jobs pass green.
