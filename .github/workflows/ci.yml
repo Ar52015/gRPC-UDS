@@ -23,6 +23,8 @@ jobs:
         run: docker run --rm -i hadolint/hadolint:v2.12.0 hadolint --ignore DL3008 - < Dockerfile
       - name: Format
         run: uv run ruff format --check .
+      - name: Generate protobuf stubs
+        run: bash proto_compile.sh
       - name: Type Check
         run: uv run mypy .
   build-images:
